@@ -45,22 +45,22 @@ function App() {
   };
 
   const bnds = { sw, ne };
-  // const bounds = {
-  //   north: 38.685,
-  //   south: 33.671,
-  //   east: -115.234,
-  //   west: -118.251
-  // }
+  // LatLngBoundsLiteral
+  const bounds2 = {
+    north: 38.685,
+    south: 33.671,
+    east: -115.234,
+    west: -118.251
+  };
 
   // Store Rectangle path in state.  UseState returns two values: current state and
   // update function.  It takes in the initial state.  So, bounds needs the
   // two corners of the box: NE and SW
-  const [bounds, setBounds] = useState([
-    // { lat: 33.671, lng: -118.251 }, // sw
-    // { lat: 38.685, lng: -115.234 }  // ne
-    // { north: 38.685, south: 33.671, east: -115.234, west: -118.251 }
-    bnds
-  ]);
+  // const [bounds, setBounds] = useState([
+  //   // { lat: 33.671, lng: -118.251 }, // sw
+  //   // { lat: 38.685, lng: -115.234 }  // ne
+  //   { north: 38.685, south: 33.671, east: -115.234, west: -118.251 }
+  // ]);
 
   // Define refs for Polygon instance and listeners
   const polygonRef = useRef(null);
@@ -82,18 +82,19 @@ function App() {
     }
   }, [setPath]);
 
-  // Call setPath with new edited path
+  // Call setBounds with new edited rectangle bounds
   // const onRectEdit = useCallback(() => {
-  // if (rectangleRef.current) {
-  // const nextBounds = rectangleRef.current
-  // .getBounds()
-  // .getArray()
-  // .map(latLng => {
-  // console.log("lat long is for rect", latLng.lat(), latLng.lng())
-  // return { lat: latLng.lat(), lng: latLng.lng() };
-  // });
-  // setBounds(nextBounds);
-  // }
+  //   console.log("editing rectangle")
+  //   // if (rectangleRef.current) {
+  //     const nextBounds = rectangleRef.current
+  //       .getBounds()  // returns LatLngBounds
+  //   //   .getArray()
+  //   //   .map(latLng => {
+  //   //     console.log("lat long is for rect", latLng.lat(), latLng.lng())
+  //   //     return { lat: latLng.lat(), lng: latLng.lng() };
+  //     // });
+  //   // setBounds(nextBounds);
+  //   // }
   // }, [setBounds]);
 
   // Bind refs to current Polygon and listeners
@@ -113,16 +114,16 @@ function App() {
 
   // Bind refs to current Polygon and listeners
   // const onRectLoad = useCallback(
-  //   rectangle => {
-  //     rectangleRef.current = rectangle;
-  //     const bounds = rectangle.getBounds();
-  //     // rectListenersRef.current.push(
-  //       // bounds.addListener("set_at", onRectEdit),
-  //       // bounds.addListener("insert_at", onRectEdit),
-  //       // bounds.addListener("remove_at", onRectEdit)
-  //     // );
-  //   },
-  //   [onRectEdit]
+  // (rectangle) => {
+  // rectangleRef.current = rectangle;
+  // const bounds = rectangle.getBounds();
+  // rectListenersRef.current.push(
+  //   bounds.addListener("set_at", onRectEdit),
+  //   // bounds.addListener("insert_at", onRectEdit),
+  //   // bounds.addListener("remove_at", onRectEdit)
+  // );
+  // },
+  // [onRectEdit]
   // );
 
   // const onRectLoad = rectangle => {
@@ -170,7 +171,7 @@ function App() {
             // Make the Rectangle editable / draggeable
             editable
             draggable
-            bounds={bounds}
+            bounds={bounds2}
             // onLoad={onRectLoad}
             // onUnmount={onUnmount}
           />
