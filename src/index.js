@@ -83,19 +83,19 @@ function App() {
   }, [setPath]);
 
   // Call setBounds with new edited rectangle bounds
-  // const onRectEdit = useCallback(() => {
-  //   console.log("editing rectangle")
-  //   // if (rectangleRef.current) {
-  //     const nextBounds = rectangleRef.current
-  //       .getBounds()  // returns LatLngBounds
-  //   //   .getArray()
-  //   //   .map(latLng => {
-  //   //     console.log("lat long is for rect", latLng.lat(), latLng.lng())
-  //   //     return { lat: latLng.lat(), lng: latLng.lng() };
-  //     // });
-  //   // setBounds(nextBounds);
-  //   // }
-  // }, [setBounds]);
+  const onRectEdit = useCallback(() => {
+    console.log("editing rectangle");
+    // if (rectangleRef.current) {
+    // const nextBounds = rectangleRef.current
+    // .getBounds()  // returns LatLngBounds
+    //   .getArray()
+    //   .map(latLng => {
+    //     console.log("lat long is for rect", latLng.lat(), latLng.lng())
+    //     return { lat: latLng.lat(), lng: latLng.lng() };
+    // });
+    // setBounds(nextBounds);
+    // }
+  }, []);
 
   // Bind refs to current Polygon and listeners
   const onLoad = useCallback(
@@ -113,18 +113,26 @@ function App() {
   );
 
   // Bind refs to current Polygon and listeners
-  // const onRectLoad = useCallback(
-  // (rectangle) => {
-  // rectangleRef.current = rectangle;
-  // const bounds = rectangle.getBounds();
-  // rectListenersRef.current.push(
-  //   bounds.addListener("set_at", onRectEdit),
-  //   // bounds.addListener("insert_at", onRectEdit),
-  //   // bounds.addListener("remove_at", onRectEdit)
-  // );
-  // },
-  // [onRectEdit]
-  // );
+  const onRectLoad = useCallback(
+    (rectangle) => {
+      rectangleRef.current = rectangle;
+      const bounds = rectangle.getBounds();
+      console.log("bounds on rect load", bounds);
+      console.log(
+        "bound components on rect load",
+        bounds.Ab.g,
+        bounds.Ab.h,
+        bounds.Ra.g,
+        bounds.Ra.h
+      );
+      rectListenersRef.current.push(
+        rectangle.addListener("bounds_changed", onRectEdit)
+        // bounds.addListener("insert_at", onRectEdit)
+        // bounds.addListener("remove_at", onRectEdit)
+      );
+    },
+    [onRectEdit]
+  );
 
   // const onRectLoad = rectangle => {
   //   console.log('rectangle: ', rectangle)
@@ -172,7 +180,10 @@ function App() {
             editable
             draggable
             bounds={bounds2}
-            // onLoad={onRectLoad}
+            onDragEnd={onRectEdit}
+            onMouseUp={onRectEdit}
+            onLoad={onRectLoad}
+            onBoundsChanged={onRectEdit}
             // onUnmount={onUnmount}
           />
         </GoogleMap>
