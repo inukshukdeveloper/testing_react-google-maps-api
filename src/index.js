@@ -44,7 +44,11 @@ function App() {
     lng: -118.251
   };
 
-  const bnds = { sw, ne };
+  var rect = new Rectangle(sw, ne);
+  var bounds4 = { sw, ne };
+
+  console.log("rect", rect);
+
   // LatLngBoundsLiteral
   const bounds2 = {
     north: 38.685,
@@ -56,11 +60,11 @@ function App() {
   // Store Rectangle path in state.  UseState returns two values: current state and
   // update function.  It takes in the initial state.  So, bounds needs the
   // two corners of the box: NE and SW
-  // const [bounds, setBounds] = useState([
-  //   // { lat: 33.671, lng: -118.251 }, // sw
-  //   // { lat: 38.685, lng: -115.234 }  // ne
-  //   { north: 38.685, south: 33.671, east: -115.234, west: -118.251 }
-  // ]);
+  const [bounds, setBounds] = useState(
+    //   // { lat: 33.671, lng: -118.251 }, // sw
+    //   // { lat: 38.685, lng: -115.234 }  // ne
+    { north: 38.685, south: 33.671, east: -115.234, west: -118.251 }
+  );
 
   // Define refs for Polygon instance and listeners
   const polygonRef = useRef(null);
@@ -71,13 +75,13 @@ function App() {
   // Call setPath with new edited path
   const onEdit = useCallback(() => {
     if (polygonRef.current) {
-      const nextPath = polygonRef.current
-        .getPath()
-        .getArray()
-        .map((latLng) => {
-          console.log("lat long is", latLng.lat(), latLng.lng());
-          return { lat: latLng.lat(), lng: latLng.lng() };
-        });
+      console.log("editing path");
+      const nextPath = polygonRef.current.getPath();
+      // .getArray()
+      // .map((latLng) => {
+      // console.log("lat long is after edit", nextPath[0], nextPath[1]);
+      //   return { lat: latLng.lat(), lng: latLng.lng() };
+      // });
       setPath(nextPath);
     }
   }, [setPath]);
@@ -85,17 +89,25 @@ function App() {
   // Call setBounds with new edited rectangle bounds
   const onRectEdit = useCallback(() => {
     console.log("editing rectangle");
-    // if (rectangleRef.current) {
-    // const nextBounds = rectangleRef.current
-    // .getBounds()  // returns LatLngBounds
-    //   .getArray()
-    //   .map(latLng => {
-    //     console.log("lat long is for rect", latLng.lat(), latLng.lng())
-    //     return { lat: latLng.lat(), lng: latLng.lng() };
-    // });
-    // setBounds(nextBounds);
-    // }
-  }, []);
+
+    if (rectangleRef.current) {
+      const nextBounds = rectangleRef.current.getBounds();
+      const bnds = {
+        north: 38.685,
+        south: 33.671,
+        east: -115.234,
+        west: -118.251
+      };
+      console.log("nextBounds on edit", nextBounds);
+      // .getBounds()  // returns LatLngBounds
+      //   .getArray()
+      //   .map(latLng => {
+      //     console.log("lat long is for rect", latLng.lat(), latLng.lng())
+      //     return { lat: latLng.lat(), lng: latLng.lng() };
+      // });
+      setBounds(nextBounds);
+    }
+  }, [setBounds]);
 
   // Bind refs to current Polygon and listeners
   const onLoad = useCallback(
@@ -179,7 +191,7 @@ function App() {
             // Make the Rectangle editable / draggeable
             editable
             draggable
-            bounds={bounds2}
+            bounds={bounds}
             onDragEnd={onRectEdit}
             onMouseUp={onRectEdit}
             onLoad={onRectLoad}
