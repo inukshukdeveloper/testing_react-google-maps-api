@@ -192,8 +192,8 @@ function App() {
             editable
             draggable
             bounds={bounds}
-            onDragEnd={onRectEdit}
-            onMouseUp={onRectEdit}
+            // onDragEnd={onRectEdit}
+            // onMouseUp={onRectEdit}
             onLoad={onRectLoad}
             onBoundsChanged={onRectEdit}
             // onUnmount={onUnmount}
