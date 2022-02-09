@@ -1,11 +1,10 @@
-import React, { useState, useRef, useCallback } from "react";
+import React, { useState, useRef, useCallback, Button } from "react";
 import ReactDOM from "react-dom";
 import {
   LoadScript,
   GoogleMap,
   Polygon,
-  Rectangle,
-  LatLngBounds
+  Rectangle
 } from "@react-google-maps/api";
 
 import "./styles.css";
@@ -92,13 +91,7 @@ function App() {
 
     if (rectangleRef.current) {
       const nextBounds = rectangleRef.current.getBounds();
-      const bnds = {
-        north: 38.685,
-        south: 33.671,
-        east: -115.234,
-        west: -118.251
-      };
-      console.log("nextBounds on edit", nextBounds);
+      console.log("nextBounds on edit", nextBounds.Ab);
       // .getBounds()  // returns LatLngBounds
       //   .getArray()
       //   .map(latLng => {
@@ -196,7 +189,7 @@ function App() {
             // onMouseUp={onRectEdit}
             onLoad={onRectLoad}
             onBoundsChanged={onRectEdit}
-            // onUnmount={onUnmount}
+            onUnmount={onUnmount}
           />
         </GoogleMap>
       </LoadScript>
