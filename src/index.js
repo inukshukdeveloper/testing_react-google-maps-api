@@ -1,4 +1,5 @@
-import React, { useState, useRef, useCallback, Button } from "react";
+import React, { useState, useRef, useCallback } from "react";
+import { Button, Alert } from "react-native";
 import ReactDOM from "react-dom";
 import {
   LoadScript,
@@ -193,6 +194,12 @@ function App() {
           />
         </GoogleMap>
       </LoadScript>
+      <div>
+        <Button
+          title="Press me"
+          onPress={() => Alert.alert("Simple Button pressed")}
+        />
+      </div>
     </div>
   );
 }
