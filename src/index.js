@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback } from "react";
+import React, { useState, useRef, useCallback, useEffect } from "react";
 import { Button, Alert } from "react-native";
 import ReactDOM from "react-dom";
 import {
@@ -20,6 +20,35 @@ import "./styles.css";
 // Then we bind those refs to the currents instances with the help of `onLoad`
 // Then we get the new path value with the `onEdit` `useCallback` and pass it to `setPath`
 // Finally we clean up the refs with `onUnmount`
+function Satellite() {
+  const [satInfo, setSatInfo] = useState([]);
+  const [hasErrors, setErrors] = useState(false);
+  async function fetchData() {
+    console.log("fetching data in satellite");
+    try {
+      console.log("fetching data in satellipe api with params page");
+      const lat1 = 1.5;
+      const lat2 = 2.5;
+      const lon1 = 3.5;
+      const lon2 = 4.5;
+      // const response = await fetch(
+      //   `${process.env.REACT_APP_SATELLITE_URL}/lat1/${lat1}/lon1/${lon1}/lat2/${lat2}/lon2/${lon2}`
+      // );
+      const response = await fetch("https://example.com")
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(`example.com returned data`);
+          console.log(data);
+        });
+      const satelliteInfo = await response.json();
+      setSatInfo(satelliteInfo);
+    } catch (err) {
+      console.log("error from fetch in satellite server");
+      console.log(err);
+      setErrors(true);
+    }
+  }
+}
 
 function App() {
   // Store Polygon path in state
@@ -153,6 +182,35 @@ function App() {
 
   console.log("The path state is", path);
 
+  // useEffect(() => {
+  //   // fetchData()
+  //   const response = await fetch("https://example.com")
+  //   .then((response) => response.json())
+  //   .then((data) => {
+  //     console.log(`example.com returned data`);
+  //     console.log(data);
+  //   });
+  // }, []);
+
+  const [books, setBooks] = useState(null);
+
+  // + adding the use
+  useEffect(() => {
+    console.log("getting book data");
+    getData();
+
+    // we will use async/await to fetch this data
+    async function getData() {
+      const response = await fetch(
+        "https://www.anapioficeandfire.com/api/books"
+      );
+      const data = await response.json();
+
+      // store the data into our books variable
+      setBooks(data);
+    }
+  }, [setBooks]); // <- you may need to put the setBooks function in this array
+
   return (
     <div className="App">
       <LoadScript
@@ -197,7 +255,7 @@ function App() {
       <div>
         <Button
           title="Press me"
-          onPress={() => Alert.alert("Simple Button pressed")}
+          onPress={() => console.log("Simple Button pressed", books[0])}
         />
       </div>
     </div>
