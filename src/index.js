@@ -201,13 +201,18 @@ function App() {
 
     // we will use async/await to fetch this data
     async function getData() {
-      const response = await fetch(
-        "https://www.anapioficeandfire.com/api/books"
-      );
-      const data = await response.json();
+      try {
+        // const response = await fetch(
+        //   "https://www.anapioficeandfire.com/api/books"
+        // );
+        const response = await fetch("http://34.82.83.54:8081/api/orders");
+        const data = await response.json();
 
-      // store the data into our books variable
-      setBooks(data);
+        // store the data into our books variable
+        setBooks(data);
+      } catch (error) {
+        console.log("error", error);
+      }
     }
   }, [setBooks]); // <- you may need to put the setBooks function in this array
 
